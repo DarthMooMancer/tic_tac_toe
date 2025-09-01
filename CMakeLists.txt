@@ -6,12 +6,14 @@ include_directories(include)
 
 set(SOURCES
 	src/main.cpp
+	src/input.cpp
+	src/window.cpp
 )
 
 add_executable(tic_tac_toe ${SOURCES})
 
-# find_package(Curses REQUIRED)
-# include_directories(${CURSES_INCLUDE_DIR})
-# target_link_libraries(tic_tac_toe ${CURSES_LIBRARIES})
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
+target_link_libraries(tic_tac_toe ${CURSES_LIBRARIES})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
