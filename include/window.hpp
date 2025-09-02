@@ -8,5 +8,7 @@
 struct Window {
 	std::array<std::array<char, COL>, ROW> m_board = {};
 	void update_display(Tile (&tile_list)[9], Border (&border_list)[16]);
+	void terminate(Tile (&tile_list)[9], bool &running);
 };
+
 #endif

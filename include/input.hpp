@@ -7,4 +7,4 @@ struct Input {
 	void get_input(bool &running, Tile (&tile_list)[9], Player &player_one, Player &player_two);
 };
 
-#endif // INPUT_HPP
+#endif
