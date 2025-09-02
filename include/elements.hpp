@@ -1,6 +1,11 @@
 #ifndef ELEMENTS_HPP
 #define ELEMENTS_HPP
 
+struct Player;
+struct Point;
+struct Tile;
+struct Border;
+
 struct Point {
 	Point();
 	Point(int row, int col) : m_row(row), m_col(col) {};
@@ -11,9 +16,11 @@ struct Point {
 };
 
 struct Player {
-	Player(char symbol, bool turn) : m_symbol(symbol), m_turn(turn) {};
+	Player(char symbol, bool turn) : m_symbol(symbol), m_turn(turn), m_win(false) {};
 	char m_symbol;
 	bool m_turn;
+	bool m_win;
+	void check_line(Tile (&tile_list)[9]);
 };
 
 struct Tile {

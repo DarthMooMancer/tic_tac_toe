@@ -26,8 +26,18 @@ int main() {
 	};
 
 	std::thread input_thread(&Input::get_input, &input, std::ref(running), std::ref(tile_list), std::ref(player_one), std::ref(player_two));
+
 	while (running) {
+		if(player_one.m_win) {
+			running = false;
+			std::cout << "Player 1 wins!" << std::endl;
+		} else if(player_two.m_win) {
+			running = false;
+			std::cout << "Player 2 wins!" << std::endl;
+		}
 		window.update_display(tile_list, border_list);
+		player_one.check_line(tile_list);
+		player_two.check_line(tile_list);
 	}
 
 	input_thread.join();

@@ -17,22 +17,22 @@ void Input::get_input(bool &running, Tile (&tile_list)[9], Player &player_one, P
 		cbreak();
 		noecho();
 
-		m_getch = getch();
+		_getch = getch();
 
 		endwin();
-		if(m_getch == 113) {
+		if(_getch == 113) {
 			running = false;
 		}
-		if(!tile_list[m_getch - 49]._delete) {
+		if(!tile_list[_getch - 49]._delete) {
 			if(player_one.m_turn) {
-				tile_list[m_getch - 49].m_symbol = player_one.m_symbol;
+				tile_list[_getch - 49].m_symbol = player_one.m_symbol;
 				_switch_turn(2, player_one, player_two);
 			} else if(player_two.m_turn) {
-				tile_list[m_getch - 49].m_symbol = player_two.m_symbol;
+				tile_list[_getch - 49].m_symbol = player_two.m_symbol;
 				_switch_turn(1, player_one, player_two);
 			}
-			tile_list[m_getch - 49]._delete = true;
-			m_getch = 48;
+			tile_list[_getch - 49]._delete = true;
+			_getch = 48;
 		}
 	}
 }
