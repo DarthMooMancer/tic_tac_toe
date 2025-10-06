@@ -1,14 +1,16 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <array>
 #include "globals.hpp"
 #include "elements.hpp"
 
 struct Window {
-	std::array<std::array<char, COL>, ROW> m_board = {};
-	void update_display(Tile (&tile_list)[9], Border (&border_list)[16]);
-	void terminate(Tile (&tile_list)[9], bool &running);
+	Point* m_board[ROW][COL] = {};
+	// void terminate(Tile (&tile_list)[9], bool &running);
+
+	void clear_display();
+	void update_display(Point** buffer);
+	void draw_display(int fps);
 };
 
 #endif
