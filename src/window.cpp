@@ -30,8 +30,12 @@ void Window::clear_display() {
 void Window::draw_display(int milliseconds) {
 	std::cout << "\033[H" << std::flush; // Clear screen
 	for(int i = 0; i < ROW; i++) {
-		for(int j = 0; j < ROW; j++) {
-			if(m_board[i][j] == nullptr) { std::cout << ". "; }
+		for(int j = 0; j < COL; j++) {
+			if(m_board[i][j] == nullptr) {
+				if(i % 2 == 0) { std::cout << "| "; }
+				if(i % 2 != 0 && j % 2 == 0) { std::cout << "- "; }
+				if(i % 2 != 0 && j % 2 != 0) { std::cout << "+ "; }
+			}
 			if(m_board[i][j] != nullptr) { std::cout << m_board[i][j]->m_symbol << " "; }
 		}
 		std::cout << "\r\n";
@@ -40,7 +44,7 @@ void Window::draw_display(int milliseconds) {
 }
 
 void Window::update_display(Point** buffer) {
-	for(int i = 0; i < ROW * COL; i++) {
+	for(int i = 0; i < 9; i++) {
 		if(buffer[i] != nullptr) {
 			m_board[buffer[i]->m_row][buffer[i]->m_col] = buffer[i];
 		}
