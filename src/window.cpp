@@ -1,36 +1,27 @@
-#include "window.hpp"
+#include <window.hpp>
+#include <ranges>
 #include <iostream>
-#include <chrono>
-#include <thread>
 
-void Window::clear_display() {
-	for(int i = 0; i < ROW; i++) {
-		for(int j = 0; j < COL; j++) {
-			m_board[i][j] = nullptr;
+Window::Window() {
+	for(auto &val : view) { val.fill('.'); }
+	for(int i : std::ranges::views::iota(0, ROW)) {
+		for(int j : std::ranges::views::iota(0, COL)) {
+			if(i % 2 == 0 && j % 2 == 0) { view[i][j] = ' '; }
 		}
 	}
 }
 
-void Window::draw_display(int milliseconds) {
+void Window::draw_display() {
 	std::cout << "\033[H" << std::flush; // Clear screen
-	for(int i = 0; i < ROW; i++) {
-		for(int j = 0; j < COL; j++) {
-			if(m_board[i][j] == nullptr) {
+	for(int i : std::ranges::views::iota(0, ROW)) {
+		for(int j : std::ranges::views::iota(0, COL)) {
+			if(view[i][j] != '.') { std::cout << view[i][j] << " "; }
+			if(view[i][j] == '.') {
 				if(i % 2 == 0) { std::cout << "| "; }
 				if(i % 2 != 0 && j % 2 == 0) { std::cout << "- "; }
 				if(i % 2 != 0 && j % 2 != 0) { std::cout << "+ "; }
 			}
-			if(m_board[i][j] != nullptr) { std::cout << m_board[i][j]->m_symbol << " "; }
 		}
 		std::cout << "\r\n";
-	}
-	std::this_thread::sleep_for(std::chrono::milliseconds((int) (milliseconds))); // 1000 / fps; 200ms = 5fps
-}
-
-void Window::update_display(Point** buffer) {
-	for(int i = 0; i < 9; i++) {
-		if(buffer[i] != nullptr) {
-			m_board[buffer[i]->m_row][buffer[i]->m_col] = buffer[i];
-		}
 	}
 }
