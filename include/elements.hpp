@@ -6,10 +6,14 @@
 class Window;
 
 struct Player {
-	Player(char symbol, int id) : m_symbol(symbol), m_id(id) {};
-	char m_symbol;
-	int m_id;
-	bool on_line();
+	Player(char id) : id(id) {};
+	char id;
+};
+
+struct vec2 {
+	vec2(int x, int y) : x(x), y(y) {}
+	int x;
+	int y;
 };
 
 class Engine {
@@ -24,11 +28,12 @@ private:
 		Player player1;
 		Player player2;
 		Player *temp;
-		GameState() : player1('x', 1), player2('o', 2), temp { &player1 } {};
+		GameState() : player1('x'), player2('o'), temp { &player1 } {};
 	} state;
 	void get_current_player();
 	bool process_input();
 	bool exit_code();
+	bool check_line(char id);
 };
 
 #endif
