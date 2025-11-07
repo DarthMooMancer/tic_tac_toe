@@ -15,16 +15,13 @@ Engine::Engine() {
 	win = std::make_unique<Window>();
 }
 
-Engine::~Engine() {
-	endwin();
-}
-
 void Engine::run() {
 	while (exit_code() && process_input()) {
 		win->draw_display();
 		std::cout << "Current Player: " << state.temp->id << "\n";
 		std::this_thread::sleep_for(std::chrono::milliseconds((int) (150))); // 1000 / fps; 200ms = 5fps
 	}
+	endwin();
 }
 
 bool Engine::exit_code() {

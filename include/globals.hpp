@@ -1,6 +1,7 @@
 #ifndef GLOBALS_HPP
 #define GLOBALS_HPP
-#define ROW 5
-#define COL 5
+
+constexpr int ROW = 5;
+constexpr int COL = 5;
 
 #endif
