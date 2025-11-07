@@ -1,3 +1,4 @@
+#include <chrono>
 #include <elements.hpp>
 #include <iostream>
 #include <window.hpp>
@@ -15,6 +16,8 @@ Engine::Engine() {
 	win = std::make_unique<Window>();
 }
 
+Engine::~Engine() {}
+
 void Engine::run() {
 	while (exit_code() && process_input()) {
 		win->draw_display();
@@ -28,9 +31,11 @@ bool Engine::exit_code() {
 	int index = 0;
 	if(check_line(state.player1.id)) {
 		std::cout << "Game Over! Player 1 wins!" << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(2));
 		return false;
 	} else if(check_line(state.player2.id)) {
 		std::cout << "Game Over! Player 2 wins!" << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(2));
 		return false;
 	}
 	for(auto &row : win->view) {
@@ -40,6 +45,7 @@ bool Engine::exit_code() {
 	}
 	if(index == 9) {
 		std::cout << "Game Over! Its a tie!" << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(2));
 		return false;
 	} else index = 0;
 	return true;
@@ -51,37 +57,37 @@ bool Engine::process_input() {
 		if(ch == 113) { return false; }
 		if(ch == 49) {
 			win->view[0][0] = state.temp->id;
-			get_current_player();
+			set_player();
 		} if(ch == 50) {
 			win->view[0][2] = state.temp->id;
-			get_current_player();
+			set_player();
 		} if(ch == 51) {
 			win->view[0][4] = state.temp->id;
-			get_current_player();
+			set_player();
 		} if(ch == 52) {
 			win->view[2][0] = state.temp->id;
-			get_current_player();
+			set_player();
 		} if(ch == 53) {
 			win->view[2][2] = state.temp->id;
-			get_current_player();
+			set_player();
 		} if(ch == 54) {
 			win->view[2][4] = state.temp->id;
-			get_current_player();
+			set_player();
 		} if(ch == 55) {
 			win->view[4][0] = state.temp->id;
-			get_current_player();
+			set_player();
 		} if(ch == 56) {
 			win->view[4][2] = state.temp->id;
-			get_current_player();
+			set_player();
 		} if(ch == 57) {
 			win->view[4][4] = state.temp->id;
-			get_current_player();
+			set_player();
 		}
 	}
 	return true;
 }
 
-void Engine::get_current_player() {
+void Engine::set_player() {
 	if(state.temp->id == 'x') { state.temp = &state.player2; }
 	else if(state.temp->id == 'o') { state.temp = &state.player1; }
 }
