@@ -1,7 +1,6 @@
 #ifndef ELEMENTS_HPP
 #define ELEMENTS_HPP
 
-#include <memory>
 #include <array>
 
 constexpr int ROW = 5;
@@ -26,21 +25,16 @@ public:
 	void run();
 
 private:
-	std::unique_ptr<Window> win;
+	Window win;
 
 	struct Player {
 		Player(char id) : id(id) {};
 		char id;
 	};
 
-	const std::array<vec2, 9> map;
-
-	struct GameState {
-		Player player1;
-		Player player2;
-		Player *temp;
-		GameState() : player1('x'), player2('o'), temp { &player1 } {};
-	} state;
+	Player player1 { 'x' };
+	Player player2 { 'o' };
+	Player *temp { &player1 };
 	bool process_input();
 	bool exit_code();
 	bool check_line(char id);
