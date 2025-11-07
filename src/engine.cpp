@@ -1,19 +1,48 @@
 #include <chrono>
-#include <elements.hpp>
+#include <engine.hpp>
 #include <iostream>
-#include <window.hpp>
 #include <memory>
 #include <ncurses.h>
 #include <thread>
 #include <ranges>
 
-Engine::Engine() {
+Window::Window() {
+	for(auto &val : view) { val.fill('.'); }
+	for(int i : std::ranges::views::iota(0, ROW)) {
+		for(int j : std::ranges::views::iota(0, COL)) {
+			if(i % 2 == 0 && j % 2 == 0) { view[i][j] = ' '; }
+		}
+	}
+}
+
+void Window::draw_display() {
+	std::cout << "\033[H" << std::flush; // Clear screen
+	for(int i : std::ranges::views::iota(0, ROW)) {
+		for(int j : std::ranges::views::iota(0, COL)) {
+			if(view[i][j] != '.') { std::cout << view[i][j] << " "; }
+			if(view[i][j] == '.') {
+				if(i % 2 == 0) { std::cout << "| "; }
+				if(i % 2 != 0 && j % 2 == 0) { std::cout << "- "; }
+				if(i % 2 != 0 && j % 2 != 0) { std::cout << "+ "; }
+			}
+		}
+		std::cout << "\r\n";
+	}
+}
+
+Engine::Engine() : 
+	map {
+		vec2 { 0, 0 }, vec2 { 2, 0 }, vec2 { 4, 0 },
+		vec2 { 0, 2 }, vec2 { 2, 2 }, vec2 { 4, 2 },
+		vec2 { 0, 4 }, vec2 { 2, 4 }, vec2 { 4, 4 }
+	} {
 	initscr();
 	cbreak();
 	noecho();
 	curs_set(0);
 	nodelay(stdscr, true);
 	win = std::make_unique<Window>();
+
 }
 
 Engine::~Engine() {}
@@ -52,36 +81,15 @@ bool Engine::exit_code() {
 }
 
 bool Engine::process_input() {
-	int ch;
+	int ch, index;
 	while((ch = getch()) != ERR) {
-		if(ch == 113) { return false; }
-		if(ch == 49) {
-			win->view[0][0] = state.temp->id;
-			set_player();
-		} if(ch == 50) {
-			win->view[0][2] = state.temp->id;
-			set_player();
-		} if(ch == 51) {
-			win->view[0][4] = state.temp->id;
-			set_player();
-		} if(ch == 52) {
-			win->view[2][0] = state.temp->id;
-			set_player();
-		} if(ch == 53) {
-			win->view[2][2] = state.temp->id;
-			set_player();
-		} if(ch == 54) {
-			win->view[2][4] = state.temp->id;
-			set_player();
-		} if(ch == 55) {
-			win->view[4][0] = state.temp->id;
-			set_player();
-		} if(ch == 56) {
-			win->view[4][2] = state.temp->id;
-			set_player();
-		} if(ch == 57) {
-			win->view[4][4] = state.temp->id;
-			set_player();
+		if(ch == 'q') { return false; }
+		if(ch >= '1' && ch <= '9') {
+			index = ch - '1';
+			if(win->view[map[index].y][map[index].x] == ' ') {
+				win->view[map[index].y][map[index].x] = state.temp->id;
+				set_player();
+			}
 		}
 	}
 	return true;
@@ -94,11 +102,13 @@ void Engine::set_player() {
 
 bool Engine::check_line(char id) {
 	for(int i : std::ranges::views::iota(0, COL)) {
+		if(ROW % 2 != 0) continue;
 		if(win->view[0][i] == id && win->view[2][i] == id && win->view[4][i] == id) {
 			return true;
 		}
 	}
 	for(int i : std::ranges::views::iota(0, ROW)) {
+		if(ROW % 2 != 0) continue;
 		if(win->view[i][0] == id && win->view[i][2] == id && win->view[i][4] == id) {
 			return true;
 		}

@@ -2,6 +2,21 @@
 #define ELEMENTS_HPP
 
 #include <memory>
+#include <array>
+#include <globals.hpp>
+
+struct Window {
+	Window();
+	std::array<std::array<char, COL>, ROW> view;
+	void clear_display();
+	void draw_display();
+};
+
+struct vec2 {
+	vec2(int x, int y) : x(x), y(y) {}
+	int x;
+	int y;
+};
 
 class Engine {
 public:
@@ -10,18 +25,14 @@ public:
 	void run();
 
 private:
-	std::unique_ptr<class Window> win;
+	std::unique_ptr<Window> win;
 
 	struct Player {
 		Player(char id) : id(id) {};
 		char id;
 	};
 
-	struct vec2 {
-		vec2(int x, int y) : x(x), y(y) {}
-		int x;
-		int y;
-	};
+	const std::array<vec2, 9> map;
 
 	struct GameState {
 		Player player1;

@@ -7,8 +7,7 @@ project(tic_tac_toe)
 
 set(SOURCES
 	src/main.cpp
-	src/window.cpp
-	src/elements.cpp
+	src/engine.cpp
 )
 
 add_executable(tic_tac_toe ${SOURCES})
