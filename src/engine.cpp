@@ -19,12 +19,10 @@ void Window::draw_display() {
 	std::cout << "\033[H" << std::flush; // Clear screen
 	for(int i : std::ranges::views::iota(0, ROW)) {
 		for(int j : std::ranges::views::iota(0, COL)) {
-			if(view[i][j] != '.') { std::cout << view[i][j] << " "; }
-			if(view[i][j] == '.') {
-				if(i % 2 == 0) { std::cout << "| "; }
-				if(i % 2 != 0 && j % 2 == 0) { std::cout << "- "; }
-				if(i % 2 != 0 && j % 2 != 0) { std::cout << "+ "; }
-			}
+			if(i % 2 == 0 && j % 2 == 0) { std::cout << view[i][j] << " "; }
+			else if(i % 2 == 0) { std::cout << "| "; }
+			else if(i % 2 != 0 && j % 2 == 0) { std::cout << "- "; }
+			else if(i % 2 != 0 && j % 2 != 0) { std::cout << "+ "; }
 		}
 		std::cout << "\r\n";
 	}
@@ -42,7 +40,6 @@ Engine::Engine() :
 	curs_set(0);
 	nodelay(stdscr, true);
 	win = std::make_unique<Window>();
-
 }
 
 Engine::~Engine() {}
@@ -51,7 +48,7 @@ void Engine::run() {
 	while (exit_code() && process_input()) {
 		win->draw_display();
 		std::cout << "Current Player: " << state.temp->id << "\n";
-		std::this_thread::sleep_for(std::chrono::milliseconds((int) (150))); // 1000 / fps; 200ms = 5fps
+		std::this_thread::sleep_for(std::chrono::milliseconds((int) (150)));
 	}
 	endwin();
 }
@@ -98,7 +95,7 @@ bool Engine::process_input() {
 
 bool Engine::check_line(char id) {
 	for(int i : std::ranges::views::iota(0, COL)) {
-		if(ROW % 2 != 0) continue;
+		if(COL % 2 != 0) continue;
 		if(win->view[0][i] == id && win->view[2][i] == id && win->view[4][i] == id) {
 			return true;
 		}
