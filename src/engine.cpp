@@ -88,16 +88,12 @@ bool Engine::process_input() {
 			index = ch - '1';
 			if(win->view[map[index].y][map[index].x] == ' ') {
 				win->view[map[index].y][map[index].x] = state.temp->id;
-				set_player();
+				if(state.temp->id == 'x') { state.temp = &state.player2; }
+				else if(state.temp->id == 'o') { state.temp = &state.player1; }
 			}
 		}
 	}
 	return true;
-}
-
-void Engine::set_player() {
-	if(state.temp->id == 'x') { state.temp = &state.player2; }
-	else if(state.temp->id == 'o') { state.temp = &state.player1; }
 }
 
 bool Engine::check_line(char id) {

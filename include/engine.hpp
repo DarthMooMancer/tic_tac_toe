@@ -3,12 +3,13 @@
 
 #include <memory>
 #include <array>
-#include <globals.hpp>
+
+constexpr int ROW = 5;
+constexpr int COL = 5;
 
 struct Window {
 	Window();
 	std::array<std::array<char, COL>, ROW> view;
-	void clear_display();
 	void draw_display();
 };
 
@@ -40,7 +41,6 @@ private:
 		Player *temp;
 		GameState() : player1('x'), player2('o'), temp { &player1 } {};
 	} state;
-	void set_player();
 	bool process_input();
 	bool exit_code();
 	bool check_line(char id);
