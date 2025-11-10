@@ -1,5 +1,5 @@
-#ifndef ELEMENTS_HPP
-#define ELEMENTS_HPP
+#ifndef ENGINE_HPP
+#define ENGINE_HPP
 
 #include <map>
 
