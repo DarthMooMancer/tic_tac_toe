@@ -1,33 +1,28 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
-#include <map>
+#include <array>
+#include <ncurses.h>
 
-constexpr int ROW = 5;
-constexpr int COL = 5;
-
-struct vec2 {
-	int x, y;
-	vec2(int x, int y) : x(x), y(y) {}
-	auto operator <=> (const vec2&) const = default;
-};
+constexpr int ROW = 3;
+constexpr int COL = 3;
 
 struct Window {
 	Window();
-	std::map<vec2, char> view;
-	void draw_display();
+	std::array<char, ROW * COL> view;
+	void draw_display() const;
 };
 
 class Engine {
 public:
 	Engine();
-	~Engine();
+	~Engine() { endwin(); };
 	void run();
 
 private:
 	struct Player {
 		Player(char id) : id(id) {};
-		char id;
+		const char id;
 	};
 
 	Window win;
