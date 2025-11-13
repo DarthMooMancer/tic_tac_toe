@@ -1,39 +1,27 @@
-#ifndef ENGINE_HPP
-#define ENGINE_HPP
+#pragma once
 
 #include <array>
-#include <ncurses.h>
 #include <string>
-
-constexpr int ROW = 3;
-constexpr int COL = 3;
 
 struct Window {
 	Window();
-	std::array<char, ROW * COL> view;
+	std::array<char, 9> view;
 	void draw_display() const;
 };
 
 class Engine {
 public:
 	Engine();
-	~Engine() { endwin(); };
+	~Engine();
 	void run();
 
 private:
-	struct Player {
-		Player(char id) : id(id) {};
-		const char id;
-	};
-
 	std::string status;
 	Window win;
-	Player player1 { 'x' };
-	Player player2 { 'o' };
-	Player *temp { &player1 };
+	char p1 { 'x' };
+	char p2 { 'o' };
+	char temp { p1 };
 	bool process_input();
-	bool exit_code();
+	bool check_game_over();
 	bool check_line(char id) const;
 };
-
-#endif
