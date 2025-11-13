@@ -5,25 +5,13 @@
 #include <ncurses.h>
 #include <thread>
 
-Window::Window() {
-	view.fill(' ');
-}
-
-void Window::draw_display() const {
-	clear();
-	mvprintw(0, 0, " %c | %c | %c ", view[0], view[1], view[2]);
-	mvprintw(1, 0, " - + - + - ");
-	mvprintw(2, 0, " %c | %c | %c ", view[3], view[4], view[5]);
-	mvprintw(3, 0, " - + - + - ");
-	mvprintw(4, 0, " %c | %c | %c ", view[6], view[7], view[8]);
-}
-
 Engine::Engine() {
 	initscr();
 	cbreak();
 	noecho();
 	curs_set(0);
 	nodelay(stdscr, true);
+	view.fill(' ');
 }
 
 Engine::~Engine() { endwin(); }
@@ -32,7 +20,7 @@ void Engine::run() {
 	while (process_input()) {
 		bool game_over = check_game_over();
 		if(!game_over) { status = "Current Player: " + std::string(1, temp) + "\n"; }
-		win.draw_display();
+		draw_display();
 		mvprintw(6, 0, status.c_str());
 		refresh();
 		if(game_over) { break; }
@@ -43,10 +31,19 @@ void Engine::run() {
 	getch();
 }
 
+void Engine::draw_display() const {
+	clear();
+	mvprintw(0, 0, " %c | %c | %c ", view[0], view[1], view[2]);
+	mvprintw(1, 0, " - + - + - ");
+	mvprintw(2, 0, " %c | %c | %c ", view[3], view[4], view[5]);
+	mvprintw(3, 0, " - + - + - ");
+	mvprintw(4, 0, " %c | %c | %c ", view[6], view[7], view[8]);
+}
+
 bool Engine::check_game_over() {
 	if(check_line(p1)) { return status = "Game Over! Player 1 wins!", true; }
 	if(check_line(p2)) { return status = "Game Over! Player 2 wins!", true; }
-	if(std::ranges::count(win.view, ' ') == 0) {
+	if(std::ranges::count(view, ' ') == 0) {
 		return status = "Game Over! It's a tie!", true;
 	}
 
@@ -61,8 +58,8 @@ bool Engine::process_input() {
 		if(ch == 'q') { return false; }
 		if(ch < '1' || ch > '9') continue;
 		index = ch - '1';
-		if(win.view[index] == ' ') {
-			win.view[index] = temp;
+		if(view[index] == ' ') {
+			view[index] = temp;
 			temp = (temp == p1) ? p2 : p1;
 		}
 	}
@@ -77,7 +74,7 @@ bool Engine::check_line(char id) const {
 		{0, 4, 8}, {2, 4, 6}
 	}};
 	for(const auto& i : wins) {
-		if(win.view[i[0]] == id && win.view[i[1]] == id && win.view[i[2]] == id) {
+		if(view[i[0]] == id && view[i[1]] == id && view[i[2]] == id) {
 			return true;
 		}
 	}

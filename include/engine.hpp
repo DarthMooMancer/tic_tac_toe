@@ -3,12 +3,6 @@
 #include <array>
 #include <string>
 
-struct Window {
-	Window();
-	std::array<char, 9> view;
-	void draw_display() const;
-};
-
 class Engine {
 public:
 	Engine();
@@ -17,7 +11,8 @@ public:
 
 private:
 	std::string status;
-	Window win;
+	std::array<char, 9> view;
+	void draw_display() const;
 	char p1 { 'x' };
 	char p2 { 'o' };
 	char temp { p1 };
