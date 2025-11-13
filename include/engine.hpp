@@ -3,6 +3,7 @@
 
 #include <array>
 #include <ncurses.h>
+#include <string>
 
 constexpr int ROW = 3;
 constexpr int COL = 3;
@@ -25,13 +26,14 @@ private:
 		const char id;
 	};
 
+	std::string status;
 	Window win;
 	Player player1 { 'x' };
 	Player player2 { 'o' };
 	Player *temp { &player1 };
 	bool process_input();
 	bool exit_code();
-	bool check_line(char id);
+	bool check_line(char id) const;
 };
 
 #endif
