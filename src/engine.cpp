@@ -21,7 +21,6 @@ void Engine::run() {
 		bool game_over = check_game_over();
 		if(!game_over) { status = "Current Player: " + std::string(1, temp) + "\n"; }
 		draw_display();
-		mvprintw(6, 0, status.c_str());
 		refresh();
 		if(game_over) { break; }
 	}
@@ -38,15 +37,13 @@ void Engine::draw_display() const {
 	mvprintw(2, 0, " %c | %c | %c ", view[3], view[4], view[5]);
 	mvprintw(3, 0, " - + - + - ");
 	mvprintw(4, 0, " %c | %c | %c ", view[6], view[7], view[8]);
+	mvprintw(6, 0, "%s", status.c_str());
 }
 
 bool Engine::check_game_over() {
 	if(check_line(p1)) { return status = "Game Over! Player 1 wins!", true; }
 	if(check_line(p2)) { return status = "Game Over! Player 2 wins!", true; }
-	if(std::ranges::count(view, ' ') == 0) {
-		return status = "Game Over! It's a tie!", true;
-	}
-
+	if(std::ranges::count(view, ' ') == 0) { return status = "Game Over! It's a tie!", true; }
 	return false;
 }
 
